@@ -20,20 +20,17 @@ class ViewController: UIViewController {
         tableView.layer.cornerRadius = 10
         tableView.register(UserTableViewCell.self, forCellReuseIdentifier: "user")
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "cell")
+//        tableView.register(BasicSettingsTableViewCell.self, forCellReuseIdentifier: "basic")
         tableView.dataSource = self
         tableView.delegate = self
         
         return tableView
     }()
     
-    private lazy var searchBar: UITextField = {
-        let searchBar = UITextField()
-        searchBar.backgroundColor = .systemGray5
-        searchBar.placeholder = "Поиск"
-        searchBar.textAlignment = .natural
-        searchBar.layer.cornerRadius = 10
-        searchBar.setLeftIcon(UIImage(systemName: "magnifyingglass")!)
-        return searchBar
+    private var searchController: UISearchController = {
+        let searchController = UISearchController()
+        searchController.searchBar.placeholder = "Поиск"
+        return searchController
     }()
     
     // MARK: - Lifecycle
@@ -44,6 +41,7 @@ class ViewController: UIViewController {
         view.backgroundColor = .systemGray6
         title = "Настройки"
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.searchController = searchController
         setupHierarchy()
         setupLayout()
     }
@@ -52,22 +50,19 @@ class ViewController: UIViewController {
 
     private func setupHierarchy() {
         view.addSubview(tableView)
-        view.addSubview(searchBar)
     }
     
     private func setupLayout() {
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(searchBar.snp.bottom).offset(20)
-            make.right.equalTo(view)
-            make.bottom.equalTo(view)
-            make.left.equalTo(view)
+            make.top.bottom.left.right.equalTo(view)
         }
-        
-        searchBar.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide)
-            make.centerX.equalTo(view)
-            make.left.equalTo(view).offset(15)
-            make.height.equalTo(35)
+    }
+    
+    @objc func switchAction(_ sender: UISwitch) {
+        if sender.isOn {
+            print("Switch активирован")
+        } else {
+            print("Switch деактивирован")
         }
     }
 }
@@ -77,7 +72,10 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 && indexPath.row == 0 {
             return 80
-            }
+        }
+        if (indexPath.section != 0) {
+            return 40
+        }
         return UITableView.automaticDimension
     }
     
@@ -96,6 +94,17 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
             user?.accessoryType = .disclosureIndicator
             return user ?? UITableViewCell()
         }
+        if indexPath.section == 1 {
+            let mySwitch = UISwitch()
+            mySwitch.addTarget(self, action: #selector(switchAction), for: .valueChanged)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? TableViewCell
+            cell?.setting = settingItems?[indexPath.section][indexPath.row]
+            cell?.accessoryType = .disclosureIndicator
+            if settingItems?[indexPath.section][indexPath.row].switcher != false {
+                cell?.accessoryView = mySwitch
+            }
+            return cell ?? UITableViewCell()
+        }
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? TableViewCell
         cell?.setting = settingItems?[indexPath.section][indexPath.row]
         cell?.accessoryType = .disclosureIndicator
@@ -103,20 +112,10 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let viewController = DetailViewController()
+        viewController.setting = settingItems?[indexPath.section][indexPath.row]
+        navigationController?.pushViewController(viewController, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
         print("Нажал: \(settingItems?[indexPath.section][indexPath.row].title ?? "")")
-    }
-    
-}
-
-extension UITextField {
-    func setLeftIcon(_ image: UIImage) {
-        let iconView = UIImageView(frame: CGRect(x: 8, y: 6, width: 20, height: 18))
-        iconView.image = image
-        iconView.tintColor = .lightGray
-        let iconContainerView: UIView = UIView(frame: CGRect(x: 20, y: 0, width: 30, height: 30))
-        iconContainerView.addSubview(iconView)
-        leftView = iconContainerView
-        leftViewMode = .always
     }
 }

@@ -15,6 +15,7 @@ class TableViewCell: UITableViewCell {
             iconImage.image = setting?.icon
             label.text = setting?.title
             imageContainer.backgroundColor = setting?.iconBackgroundColor
+            additionalInfo.text = setting?.additionalInfo
         }
     }
     
@@ -22,10 +23,7 @@ class TableViewCell: UITableViewCell {
     
     private let imageContainer: UIView = {
         let container = UIView()
-        container.clipsToBounds = true
-        container.contentMode = .scaleToFill
         container.layer.cornerRadius = 5
-        container.layer.masksToBounds = true
         return container
     }()
     
@@ -38,6 +36,12 @@ class TableViewCell: UITableViewCell {
     
     private let label: UILabel = {
         let label = UILabel()
+        return label
+    }()
+    
+    private let additionalInfo: UILabel = {
+        let label = UILabel()
+        label.textColor = .gray
         return label
     }()
     
@@ -57,27 +61,31 @@ class TableViewCell: UITableViewCell {
     
     private func setupHierarchy() {
         imageContainer.addSubview(iconImage)
-        addSubview(imageContainer)
-        addSubview(label)
-
+        contentView.addSubview(imageContainer)
+        contentView.addSubview(label)
+        contentView.addSubview(additionalInfo)
     }
     
     private func setupLayout() {
         iconImage.snp.makeConstraints { make in
-            make.top.right.bottom.left.equalTo(imageContainer)
             make.center.equalTo(imageContainer)
         }
         
         imageContainer.snp.makeConstraints { make in
-            make.top.bottom.equalTo(contentView).offset(10)
-            make.left.equalTo(contentView).offset(15)
+            make.left.equalTo(contentView.snp.left).offset(15)
             make.centerY.equalTo(contentView)
-            make.width.height.equalTo(25)
+            make.height.equalTo(contentView).dividedBy(1.5)
+            make.width.equalTo(imageContainer.snp.height)
         }
         
         label.snp.makeConstraints { make in
             make.centerY.equalTo(imageContainer)
-            make.left.equalTo(imageContainer.snp.right).offset(20)
+            make.left.equalTo(imageContainer.snp.right).offset(15)
+        }
+        
+        additionalInfo.snp.makeConstraints { make in
+            make.right.equalTo(contentView).offset(-8)
+            make.centerY.equalTo(contentView)
         }
     }
     

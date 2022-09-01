@@ -14,10 +14,11 @@ class UserTableViewCell: UITableViewCell {
             photo.image = setting?.icon
             name.text = setting?.title
             userInfo.text = setting?.userInfo
+            additionalInfo.text = setting?.additionalInfo
         }
     }
     
-    // MARK: _ Outlets
+    // MARK: - Outlets
     
     private let imageContainer: UIView = {
         let container = UIView()
@@ -47,11 +48,17 @@ class UserTableViewCell: UITableViewCell {
         return label
     }()
     
+    private let additionalInfo: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        return label
+    }()
+    
     private let stack: UIStackView = {
         let stack = UIStackView()
         stack.alignment = .leading
         stack.axis = .vertical
-        stack.distribution = .fill
+        stack.distribution = .fillProportionally
         stack.spacing = 2
         return stack
     }()
@@ -76,6 +83,7 @@ class UserTableViewCell: UITableViewCell {
         addSubview(stack)
         stack.addArrangedSubview(name)
         stack.addArrangedSubview(userInfo)
+        stack.addArrangedSubview(additionalInfo)
     }
     
     private func setupLayout() {

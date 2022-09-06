@@ -10,6 +10,8 @@ import SnapKit
 
 class TableViewCell: UITableViewCell {
 
+    static var identifier = "cell"
+    
     var setting: SettingsItem? {
         didSet {
             iconImage.image = setting?.icon

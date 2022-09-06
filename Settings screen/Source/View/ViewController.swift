@@ -18,9 +18,8 @@ class ViewController: UIViewController {
         tableView.layer.masksToBounds = true
         tableView.clipsToBounds = true
         tableView.layer.cornerRadius = 10
-        tableView.register(UserTableViewCell.self, forCellReuseIdentifier: "user")
-        tableView.register(TableViewCell.self, forCellReuseIdentifier: "cell")
-//        tableView.register(BasicSettingsTableViewCell.self, forCellReuseIdentifier: "basic")
+        tableView.register(UserTableViewCell.self, forCellReuseIdentifier: UserTableViewCell.identifier)
+        tableView.register(TableViewCell.self, forCellReuseIdentifier: TableViewCell.identifier)
         tableView.dataSource = self
         tableView.delegate = self
         
@@ -67,17 +66,7 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController: UITableViewDataSource, UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 && indexPath.row == 0 {
-            return 80
-        }
-        if (indexPath.section != 0) {
-            return 40
-        }
-        return UITableView.automaticDimension
-    }
+extension ViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return settingItems?.count ?? 0
@@ -88,13 +77,13 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 && indexPath.row == 0 {
+        switch indexPath.section {
+        case 0:
             let user = tableView.dequeueReusableCell(withIdentifier: "user", for: indexPath) as? UserTableViewCell
             user?.setting = settingItems?[indexPath.section][indexPath.row]
             user?.accessoryType = .disclosureIndicator
             return user ?? UITableViewCell()
-        }
-        if indexPath.section == 1 {
+        default:
             let mySwitch = UISwitch()
             mySwitch.addTarget(self, action: #selector(switchAction), for: .valueChanged)
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? TableViewCell
@@ -103,12 +92,21 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
             if settingItems?[indexPath.section][indexPath.row].switcher != false {
                 cell?.accessoryView = mySwitch
             }
-            return cell ?? UITableViewCell()
+            return UITableViewCell()
         }
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? TableViewCell
-        cell?.setting = settingItems?[indexPath.section][indexPath.row]
-        cell?.accessoryType = .disclosureIndicator
-        return cell ?? UITableViewCell()
+    }
+}
+
+extension ViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 0 && indexPath.row == 0 {
+            return 80
+        }
+        if (indexPath.section != 0) {
+            return 40
+        }
+        return UITableView.automaticDimension
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

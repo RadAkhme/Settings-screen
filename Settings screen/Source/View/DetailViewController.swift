@@ -13,8 +13,7 @@ class DetailViewController: UIViewController {
     var setting: SettingsItem?
     
     // MARK: - Outlets
-    
-    
+        
     private let imageContainer: UIView = {
         let container = UIView()
         container.layer.cornerRadius = 5

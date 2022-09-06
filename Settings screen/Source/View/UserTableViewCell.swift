@@ -8,6 +8,8 @@
 import UIKit
 
 class UserTableViewCell: UITableViewCell {
+    
+    static var identifier = "user"
 
     var setting: SettingsItem? {
         didSet {
@@ -103,7 +105,6 @@ class UserTableViewCell: UITableViewCell {
             make.centerY.equalTo(imageContainer)
             make.left.equalTo(imageContainer.snp.right).offset(15)
         }
-        
     }
     
     // MARK: - Reuse

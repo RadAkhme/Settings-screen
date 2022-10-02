@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  SettingsView.swift
 //  Settings screen
 //
 //  Created by Радик Ахметзянов on 30.08.2022.
@@ -8,9 +8,15 @@
 import UIKit
 import SnapKit
 
-class ViewController: UIViewController {
+class SettingsView: UIView {
     
-    private var settingItems: [[SettingsItem]]?
+    func configureView(with model: SettingsModel) {
+        self.models = model
+        tableView.reloadData()
+    }
+    
+    private var models = SettingsModel()
+    private var modelka: SettingsController?
     
     // MARK: - Outlets
     private lazy var tableView: UITableView = {
@@ -26,21 +32,20 @@ class ViewController: UIViewController {
         return tableView
     }()
     
-    private var searchController: UISearchController = {
-        let searchController = UISearchController()
-        searchController.searchBar.placeholder = "Поиск"
-        return searchController
-    }()
+    // MARK: - Initial
     
-    // MARK: - Lifecycle
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        settingItems = SettingsItem.settingItems
-        view.backgroundColor = .systemGray6
-        title = "Настройки"
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.searchController = searchController
+    init() {
+        super.init(frame: .zero)
+        commonInit()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        commonInit()
+    }
+    
+    private func commonInit() {
+        backgroundColor = .systemGray6
         setupHierarchy()
         setupLayout()
     }
@@ -48,12 +53,12 @@ class ViewController: UIViewController {
     // MARK: - Setup
 
     private func setupHierarchy() {
-        view.addSubview(tableView)
+        addSubview(tableView)
     }
     
     private func setupLayout() {
         tableView.snp.makeConstraints { make in
-            make.top.bottom.left.right.equalTo(view)
+            make.top.bottom.left.right.equalTo(safeAreaInsets)
         }
     }
     
@@ -66,38 +71,38 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController: UITableViewDataSource {
+extension SettingsView: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return settingItems?.count ?? 0
+        return models.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return settingItems?[section].count ?? 0
+        return models[section].count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
         case 0:
             let user = tableView.dequeueReusableCell(withIdentifier: "user", for: indexPath) as? UserTableViewCell
-            user?.setting = settingItems?[indexPath.section][indexPath.row]
+            user?.setting = models[indexPath.section][indexPath.row]
             user?.accessoryType = .disclosureIndicator
             return user ?? UITableViewCell()
         default:
             let mySwitch = UISwitch()
             mySwitch.addTarget(self, action: #selector(switchAction), for: .valueChanged)
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? TableViewCell
-            cell?.setting = settingItems?[indexPath.section][indexPath.row]
+            cell?.configureView(with: models[indexPath.section][indexPath.row])
             cell?.accessoryType = .disclosureIndicator
-            if settingItems?[indexPath.section][indexPath.row].switcher != false {
+            if models[indexPath.section][indexPath.row] != false {
                 cell?.accessoryView = mySwitch
             }
-            return UITableViewCell()
+            return cell ?? UITableViewCell()
         }
     }
 }
 
-extension ViewController: UITableViewDelegate {
+extension SettingsView: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 && indexPath.row == 0 {
@@ -111,9 +116,8 @@ extension ViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let viewController = DetailViewController()
-        viewController.setting = settingItems?[indexPath.section][indexPath.row]
-        navigationController?.pushViewController(viewController, animated: true)
+        viewController.setting = models[indexPath.section][indexPath.row]
+//        navigationController?.pushViewController(viewController, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
-        print("Нажал: \(settingItems?[indexPath.section][indexPath.row].title ?? "")")
     }
 }

@@ -13,9 +13,9 @@ class DetailViewController: UIView {
     var setting: SettingsModel?
     
     func configureView(with model: Settings) {
-        imageView.image = model.icon
+        imageView.image = UIImage(systemName: model.icon)
         label.text = model.title
-        imageContainer.backgroundColor = model.iconBackgroundColor
+        imageContainer.backgroundColor = UIColor(named: model.iconBackgroundColor)
     }
     
     // MARK: - Outlets

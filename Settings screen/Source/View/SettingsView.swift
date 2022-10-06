@@ -10,12 +10,12 @@ import SnapKit
 
 class SettingsView: UIView {
     
-    func configureView(with model: SettingsModel) {
-        self.models = model
+    func configureView(with models: [SettingsModel]) {
+        self.models = models
         tableView.reloadData()
     }
     
-    private var models = SettingsModel()
+    private var models = [SettingsModel]()
     private var modelka: SettingsController?
     
     // MARK: - Outlets
@@ -85,7 +85,7 @@ extension SettingsView: UITableViewDataSource {
         switch indexPath.section {
         case 0:
             let user = tableView.dequeueReusableCell(withIdentifier: "user", for: indexPath) as? UserTableViewCell
-            user?.setting = models[indexPath.section][indexPath.row]
+            user?.configureView(with: models[indexPath.section][indexPath.row])
             user?.accessoryType = .disclosureIndicator
             return user ?? UITableViewCell()
         default:

@@ -13,9 +13,9 @@ class TableViewCell: UITableViewCell {
     static var identifier = "cell"
     
     func configureView(with model: Settings) {
-        iconImage.image = model.icon
+        iconImage.image = UIImage(systemName: model.icon)
         label.text = model.title
-        imageContainer.backgroundColor = model.iconBackgroundColor
+        imageContainer.backgroundColor = UIColor(named: model.iconBackgroundColor)
         additionalInfo.text = model.additionalInfo
     }
     

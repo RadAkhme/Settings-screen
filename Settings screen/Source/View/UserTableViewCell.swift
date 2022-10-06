@@ -12,7 +12,7 @@ class UserTableViewCell: UITableViewCell {
     static var identifier = "user"
 
     func configureView(with model: Settings) {
-        photo.image = model.icon
+        photo.image = UIImage(systemName: model.icon)
         name.text = model.title
         userInfo.text = model.userInfo
         additionalInfo.text = model.additionalInfo

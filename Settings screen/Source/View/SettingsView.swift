@@ -10,13 +10,12 @@ import SnapKit
 
 class SettingsView: UIView {
     
-    func configureView(with models: [SettingsModel]) {
+    func configureView(with models: [[Settings]]) {
         self.models = models
         tableView.reloadData()
     }
     
-    private var models = [SettingsModel]()
-    private var modelka: SettingsController?
+    private var models = [[Settings]]()
     
     // MARK: - Outlets
     private lazy var tableView: UITableView = {
@@ -94,7 +93,7 @@ extension SettingsView: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? TableViewCell
             cell?.configureView(with: models[indexPath.section][indexPath.row])
             cell?.accessoryType = .disclosureIndicator
-            if models[indexPath.section][indexPath.row] != false {
+            if models[indexPath.section][indexPath.row].switcher != false {
                 cell?.accessoryView = mySwitch
             }
             return cell ?? UITableViewCell()
@@ -116,7 +115,7 @@ extension SettingsView: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let viewController = DetailViewController()
-        viewController.setting = models[indexPath.section][indexPath.row]
+        viewController.setting?.createModels()
 //        navigationController?.pushViewController(viewController, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
     }

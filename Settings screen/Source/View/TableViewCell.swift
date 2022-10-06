@@ -19,15 +19,6 @@ class TableViewCell: UITableViewCell {
         additionalInfo.text = model.additionalInfo
     }
     
-//    var setting: SettingsItem? {
-//        didSet {
-//            iconImage.image = setting?.icon
-//            label.text = setting?.title
-//            imageContainer.backgroundColor = setting?.iconBackgroundColor
-//            additionalInfo.text = setting?.additionalInfo
-//        }
-//    }
-    
     // MARK: _ Outlets
     
     private let imageContainer: UIView = {

@@ -11,7 +11,7 @@ final class SettingsModel {
     
     func createModels() -> [[Settings]] {
         return [
-            [Settings(title: "Радик Ахметзянов", icon: "faceid", iconBackgroundColor: "UIColor.clear", userInfo: "Apple ID, iCloud, контент", additionalInfo: "и покупки", switcher: false)],
+            [Settings(title: "Радик Ахметзянов", icon: "id", iconBackgroundColor: "UIColor.clear", userInfo: "Apple ID, iCloud, контент", additionalInfo: "и покупки", switcher: false)],
             [Settings(title: "Авиарежим", icon: "airplane", iconBackgroundColor: "orange", userInfo: "",  additionalInfo: "",switcher: true),
              Settings(title: "Wi-Fi", icon: "wifi", iconBackgroundColor: "systemBlue", userInfo: "", additionalInfo: "Home-wifi", switcher: false),
              Settings(title: "Bluetooth", icon: "bluetooth", iconBackgroundColor: "systemBlue", userInfo: "", additionalInfo: "Вкл.", switcher: false),

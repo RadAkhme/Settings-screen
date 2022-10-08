@@ -1,6 +1,7 @@
 {
   "images" : [
     {
+      "compression-type" : "automatic",
       "filename" : "vpn.png",
       "idiom" : "universal",
       "scale" : "1x"

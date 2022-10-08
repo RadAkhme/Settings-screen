@@ -8,10 +8,23 @@
 import UIKit
 import SnapKit
 
-class DetailViewController: UIViewController {
-
-    var setting: SettingsItem?
+class DetailView: UIView {
     
+    private var models = SettingsController.model
+    
+    var model: Settings?
+    
+    func configureView(with model: [[Settings]]) {
+        self.models = model
+        configure()
+    }
+    
+    func configure() {
+        imageView.image = UIImage(named: model?.icon ?? "")
+        label.text = model?.title
+        imageContainer.backgroundColor = UIColor(named: model?.iconBackgroundColor ?? "")
+    }
+
     // MARK: - Outlets
         
     private let imageContainer: UIView = {
@@ -33,12 +46,20 @@ class DetailViewController: UIViewController {
         return label
     }()
     
-    // MARK: - Lifecycle
+    // MARK: - Initial
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .systemGray6
-        configure()
+    init() {
+        super.init(frame: .zero)
+        commonInit()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        commonInit()
+    }
+    
+    private func commonInit() {
+        backgroundColor = .systemGray6
         setupHierarchy()
         setupLayout()
     }
@@ -47,8 +68,8 @@ class DetailViewController: UIViewController {
     
     private func setupHierarchy() {
         imageContainer.addSubview(imageView)
-        view.addSubview(imageContainer)
-        view.addSubview(label)
+        addSubview(imageContainer)
+        addSubview(label)
     }
     
     private func setupLayout() {
@@ -57,22 +78,16 @@ class DetailViewController: UIViewController {
         }
         
         imageContainer.snp.makeConstraints { make in
-            make.center.equalTo(view)
-            make.centerY.equalTo(view).offset(-30)
+            make.center.equalToSuperview()
+            make.centerY.equalTo(-30)
             make.width.height.equalTo(30)
         }
         
         label.snp.makeConstraints { make in
-            make.centerX.equalTo(view)
-            make.top.equalTo(imageContainer.snp.bottom).offset(15)
-            make.centerX.equalTo(view)
+            make.centerX.equalToSuperview()
+            make.top.equalTo(15)
+            make.centerX.equalToSuperview()
         }
-    }
-    
-    private func configure() {
-        imageView.image = setting?.icon
-        label.text = setting?.title
-        imageContainer.backgroundColor = setting?.iconBackgroundColor
     }
 }
 

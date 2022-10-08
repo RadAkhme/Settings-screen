@@ -12,13 +12,11 @@ class TableViewCell: UITableViewCell {
 
     static var identifier = "cell"
     
-    var setting: SettingsItem? {
-        didSet {
-            iconImage.image = setting?.icon
-            label.text = setting?.title
-            imageContainer.backgroundColor = setting?.iconBackgroundColor
-            additionalInfo.text = setting?.additionalInfo
-        }
+    func configureView(with model: Settings) {
+        iconImage.image = UIImage(named: model.icon)
+        label.text = model.title
+        imageContainer.backgroundColor = UIColor(named: model.iconBackgroundColor)
+        additionalInfo.text = model.additionalInfo
     }
     
     // MARK: _ Outlets
@@ -56,7 +54,7 @@ class TableViewCell: UITableViewCell {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError("Error")
     }
 
     // MARK: - Setup
@@ -71,6 +69,8 @@ class TableViewCell: UITableViewCell {
     private func setupLayout() {
         iconImage.snp.makeConstraints { make in
             make.center.equalTo(imageContainer)
+            make.height.equalTo(imageContainer).offset(30)
+
         }
         
         imageContainer.snp.makeConstraints { make in
@@ -89,14 +89,6 @@ class TableViewCell: UITableViewCell {
             make.right.equalTo(contentView).offset(-8)
             make.centerY.equalTo(contentView)
         }
-    }
-    
-    // MARK: - Reuse
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        self.accessoryType = .none
-        self.setting = nil
     }
 }
 

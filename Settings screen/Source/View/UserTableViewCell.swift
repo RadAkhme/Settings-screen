@@ -11,13 +11,11 @@ class UserTableViewCell: UITableViewCell {
     
     static var identifier = "user"
 
-    var setting: SettingsItem? {
-        didSet {
-            photo.image = setting?.icon
-            name.text = setting?.title
-            userInfo.text = setting?.userInfo
-            additionalInfo.text = setting?.additionalInfo
-        }
+    func configureView(with model: Settings) {
+        photo.image = UIImage(named: model.icon)
+        name.text = model.title
+        userInfo.text = model.userInfo
+        additionalInfo.text = model.additionalInfo
     }
     
     // MARK: - Outlets
@@ -105,14 +103,6 @@ class UserTableViewCell: UITableViewCell {
             make.centerY.equalTo(imageContainer)
             make.left.equalTo(imageContainer.snp.right).offset(15)
         }
-    }
-    
-    // MARK: - Reuse
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        self.accessoryType = .none
-        self.setting = nil
     }
 }
 

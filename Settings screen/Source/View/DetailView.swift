@@ -8,12 +8,12 @@
 import UIKit
 import SnapKit
 
-class DetailViewController: UIView {
+class DetailView: UIView {
 
     var setting: SettingsModel?
     
     func configureView(with model: Settings) {
-        imageView.image = UIImage(systemName: model.icon)
+        imageView.image = UIImage(named: model.icon)
         label.text = model.title
         imageContainer.backgroundColor = UIColor(named: model.iconBackgroundColor)
     }
@@ -71,15 +71,15 @@ class DetailViewController: UIView {
         }
         
         imageContainer.snp.makeConstraints { make in
-            make.center.self
+            make.center.equalToSuperview()
             make.centerY.equalTo(-30)
             make.width.height.equalTo(30)
         }
         
         label.snp.makeConstraints { make in
-            make.centerX.self
+            make.centerX.equalToSuperview()
             make.top.equalTo(15)
-            make.centerX.self
+            make.centerX.equalToSuperview()
         }
     }
 }

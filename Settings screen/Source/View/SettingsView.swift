@@ -15,7 +15,9 @@ class SettingsView: UIView {
         tableView.reloadData()
     }
     
-    private var models = [[Settings]]()
+    private var models = SettingsController.model
+    
+    var navigationController = UINavigationController()
     
     // MARK: - Outlets
     private lazy var tableView: UITableView = {
@@ -114,9 +116,9 @@ extension SettingsView: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let viewController = DetailViewController()
-        viewController.setting?.createModels()
-//        navigationController?.pushViewController(viewController, animated: true)
+//        let viewController = DetailController()
+//        navigationController.pushViewController(viewController, animated: true)
+
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }

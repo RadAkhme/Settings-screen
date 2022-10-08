@@ -9,15 +9,21 @@ import UIKit
 import SnapKit
 
 class DetailView: UIView {
-
-    var setting: SettingsModel?
     
-    func configureView(with model: Settings) {
-        imageView.image = UIImage(named: model.icon)
-        label.text = model.title
-        imageContainer.backgroundColor = UIColor(named: model.iconBackgroundColor)
+    private var models = SettingsController.model
+    var model: Settings?
+    
+    func configureView(with model: [[Settings]]) {
+        self.models = model
+        configure()
     }
     
+    func configure() {
+        imageView.image = UIImage(named: model?.icon ?? "")
+        label.text = model?.title
+        imageContainer.backgroundColor = UIColor(named: model?.iconBackgroundColor ?? "")
+    }
+
     // MARK: - Outlets
         
     private let imageContainer: UIView = {

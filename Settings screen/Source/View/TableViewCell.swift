@@ -13,7 +13,7 @@ class TableViewCell: UITableViewCell {
     static var identifier = "cell"
     
     func configureView(with model: Settings) {
-        iconImage.image = UIImage(systemName: model.icon)
+        iconImage.image = UIImage(named: model.icon)
         label.text = model.title
         imageContainer.backgroundColor = UIColor(named: model.iconBackgroundColor)
         additionalInfo.text = model.additionalInfo
@@ -69,6 +69,8 @@ class TableViewCell: UITableViewCell {
     private func setupLayout() {
         iconImage.snp.makeConstraints { make in
             make.center.equalTo(imageContainer)
+            make.height.equalTo(imageContainer).offset(30)
+
         }
         
         imageContainer.snp.makeConstraints { make in

@@ -8,22 +8,33 @@
 import UIKit
 
 class DetailController: UIViewController {
+    
+    var models: SettingsModel?
+    var model = [[Settings]]()
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+    private var detailView: DetailView? {
+        guard isViewLoaded else { return nil }
+        return view as? DetailView
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    //MARK: - Lifecycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view = DetailView()
+        models = SettingsModel()
+        configureView()
     }
-    */
-
 }
+
+extension DetailController {
+    
+    // MARK: - Configurations
+    
+    func configureView() {
+        guard let model = models?.createModels() else { return }
+        detailView?.configureView(with: model)
+    }
+}
+

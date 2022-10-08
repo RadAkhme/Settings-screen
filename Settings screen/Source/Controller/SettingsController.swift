@@ -9,30 +9,25 @@ import UIKit
 
 class SettingsController: UIViewController {
     
-        static var models: SettingsModel?
+    static var models: SettingsModel?
     
-        static var model = [[Settings]]()
+    static var model = [[Settings]]()
     
-        private var settingsView: SettingsView? {
-            guard isViewLoaded else { return nil }
-            return view as? SettingsView
-        }
+    private var settingsView: SettingsView? {
+        guard isViewLoaded else { return nil }
+        return view as? SettingsView
+    }
     
-        private var detailView: DetailView? {
-            guard isViewLoaded else { return nil }
-            return view as? DetailView
-        }
-        
-        //MARK: - Lifecycle
-        
-        override func viewDidLoad() {
-            super.viewDidLoad()
-            title = "Настройки"
-            navigationController?.navigationBar.prefersLargeTitles = true
-            view = SettingsView()
-            SettingsController.models = SettingsModel()
-            configureView()
-        }
+    //MARK: - Lifecycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "Настройки"
+        navigationController?.navigationBar.prefersLargeTitles = true
+        view = SettingsView()
+        SettingsController.models = SettingsModel()
+        configureView()
+    }
 }
 
 extension SettingsController {

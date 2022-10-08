@@ -11,6 +11,7 @@ import SnapKit
 class DetailView: UIView {
     
     private var models = SettingsController.model
+    
     var model: Settings?
     
     func configureView(with model: [[Settings]]) {

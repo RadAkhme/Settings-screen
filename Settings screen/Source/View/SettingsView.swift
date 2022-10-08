@@ -20,6 +20,7 @@ class SettingsView: UIView {
     var navigationController = UINavigationController()
     
     // MARK: - Outlets
+    
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.layer.masksToBounds = true
@@ -116,9 +117,10 @@ extension SettingsView: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let viewController = DetailController()
-//        navigationController.pushViewController(viewController, animated: true)
-
+        let viewController = DetailController()
+        viewController.modelTwo = models[indexPath.section][indexPath.row]
+        navigationController.pushViewController(viewController, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
+        print("Нажал: \(models[indexPath.section][indexPath.row].title)")
     }
 }

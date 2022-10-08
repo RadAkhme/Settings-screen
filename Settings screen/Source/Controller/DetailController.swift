@@ -10,7 +10,10 @@ import UIKit
 class DetailController: UIViewController {
     
     var models: SettingsModel?
+    
     var model = [[Settings]]()
+    
+    var modelTwo: Settings?
 
         
     private var detailView: DetailView? {
